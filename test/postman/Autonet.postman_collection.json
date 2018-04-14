@@ -1,10 +1,9 @@
 {
-	"variables": [],
 	"info": {
 		"name": "Autonet Api Documentation",
-		"_postman_id": "bb7ba8da-4d74-ba08-b636-0539bf1652d9",
+		"_postman_id": "c3b0b3f9-05c9-d2a0-e1ad-5863e7dcf26b",
 		"description": "Autonet api documentation",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": []
 }

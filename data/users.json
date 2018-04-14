@@ -40,8 +40,8 @@
     "avatar": "string",
     "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
     "departmentName": "Technology",
-    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
-    "teamName": "",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839cd",
+    "teamName": "Marketing",
     "jobTitle": "Developer",
     "contacts": [
       {
@@ -57,7 +57,7 @@
     "avatar": "string",
     "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
     "departmentName": "Technology",
-    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839cb",
     "teamName": "Auction House",
     "jobTitle": "Developer",
     "contacts": [

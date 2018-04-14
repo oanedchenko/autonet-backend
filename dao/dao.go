@@ -123,7 +123,7 @@ func (d *dao) GetUsersPage(departmentId string, teamId string, offset int, limit
 	ctx := driver.WithQueryCount(context.Background())
 	cursor, err := db.Query(ctx, `FOR u IN users
 		FILTER (@departmentId == "" || u.departmentId == @departmentId)
-			|| (@teamId == "" || u.teamId == @teamId)
+			&& (@teamId == "" || u.teamId == @teamId)
 		SORT u.lastName, u.firstName 
 		LIMIT @offset, @limit 
 		RETURN u`, vars)
@@ -153,7 +153,7 @@ func (d *dao) GetUsersPage(departmentId string, teamId string, offset int, limit
 	}
 	countCursor, err := db.Query(context.Background(), `FOR u IN users
 		FILTER (@departmentId == "" || u.departmentId == @departmentId)
-			|| (@teamId == "" || u.teamId == @teamId)
+			&& (@teamId == "" || u.teamId == @teamId)
         COLLECT WITH COUNT INTO length
         RETURN length`, vars)
 

@@ -70,7 +70,7 @@ func GetUsersPage(params user.GetUsersParams) middleware.Responder {
 	d := dao.NewDao()
 
 	offset, limit := pageParams(params.PageNumber, params.PageSize)
-	data, count, err := d.GetUsersPage(ptrToStr(params.DepartmentID), ptrToStr(params.DepartmentID), offset, limit)
+	data, count, err := d.GetUsersPage(ptrToStr(params.DepartmentID), ptrToStr(params.TeamID), offset, limit)
 
 	if err != nil || data == nil {
 		return newInternalServerError()
