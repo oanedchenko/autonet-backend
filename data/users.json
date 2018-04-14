@@ -1,0 +1,70 @@
+[
+  {
+    "_key": "4708acbf-0e6f-43a6-b0dd-19e6d3900e6f",
+    "firstName": "Iryna",
+    "lastName": "Makhakhei",
+    "avatar": "string",
+    "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
+    "departmentName": "Technology",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
+    "teamName": "Mobile",
+    "jobTitle": "QA Engineer",
+    "contacts": [
+      {
+        "type": "EMAIL",
+        "value": "iryna.makhakhei@auto1.com"
+      }
+    ]
+  },
+  {
+    "_key": "5fd86991-0afa-4e5a-95d6-7a93d60b8874",
+    "firstName": "Maria",
+    "lastName": "Dalavika",
+    "avatar": "string",
+    "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
+    "departmentName": "Technology",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
+    "teamName": "Mobile",
+    "jobTitle": "Project Manager",
+    "contacts": [
+      {
+        "type": "EMAIL",
+        "value": "maria.dalavika@auto1.com"
+      }
+    ]
+  },
+  {
+    "_key": "ac1b578b-acee-4fff-8ebf-fbef794a2a7e",
+    "firstName": "Oleg",
+    "lastName": "Anedchenko",
+    "avatar": "string",
+    "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
+    "departmentName": "Technology",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
+    "teamName": "",
+    "jobTitle": "Developer",
+    "contacts": [
+      {
+        "type": "EMAIL",
+        "value": "oleg.anedchenko@auto1.com"
+      }
+    ]
+  },
+  {
+    "_key": "69c39a0f-a653-468a-bc68-98bf2bdacf5f",
+    "firstName": "Jose",
+    "lastName": "Alavez",
+    "avatar": "string",
+    "departmentId": "8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413",
+    "departmentName": "Technology",
+    "teamId": "c21975a6-c97c-4ef3-ace3-9570df9839ce",
+    "teamName": "Auction House",
+    "jobTitle": "Developer",
+    "contacts": [
+      {
+        "type": "EMAIL",
+        "value": "jose.alavez@auto1.com"
+      }
+    ]
+  }
+]
