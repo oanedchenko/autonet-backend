@@ -9,11 +9,14 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+
+	"github.com/go-openapi/swag"
 )
 
 // GetDepartmentsURL generates an URL for the get departments operation
 type GetDepartmentsURL struct {
-	NameFilter *string
+	PageNumber *int32
+	PageSize   *int32
 
 	_basePath string
 	// avoid unkeyed usage
@@ -49,12 +52,20 @@ func (o *GetDepartmentsURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	var nameFilter string
-	if o.NameFilter != nil {
-		nameFilter = *o.NameFilter
+	var pageNumber string
+	if o.PageNumber != nil {
+		pageNumber = swag.FormatInt32(*o.PageNumber)
 	}
-	if nameFilter != "" {
-		qs.Set("nameFilter", nameFilter)
+	if pageNumber != "" {
+		qs.Set("pageNumber", pageNumber)
+	}
+
+	var pageSize string
+	if o.PageSize != nil {
+		pageSize = swag.FormatInt32(*o.PageSize)
+	}
+	if pageSize != "" {
+		qs.Set("pageSize", pageSize)
 	}
 
 	result.RawQuery = qs.Encode()

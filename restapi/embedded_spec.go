@@ -38,9 +38,19 @@ func init() {
         "operationId": "getDepartments",
         "parameters": [
           {
-            "type": "string",
-            "description": "filter by department name",
-            "name": "nameFilter",
+            "type": "number",
+            "format": "int32",
+            "default": 0,
+            "description": "page number",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 10,
+            "description": "page size",
+            "name": "pageSize",
             "in": "query"
           }
         ],
@@ -77,6 +87,22 @@ func init() {
             "description": "id of the department to filter by",
             "name": "departmentId",
             "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 0,
+            "description": "page number",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 10,
+            "description": "page size",
+            "name": "pageSize",
+            "in": "query"
           }
         ],
         "responses": {
@@ -110,8 +136,13 @@ func init() {
             "type": "string",
             "description": "department id filter",
             "name": "departmentId",
-            "in": "query",
-            "required": true
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "team id filter",
+            "name": "teamId",
+            "in": "query"
           },
           {
             "type": "number",
@@ -125,7 +156,7 @@ func init() {
             "type": "number",
             "format": "int32",
             "default": 10,
-            "description": "page number",
+            "description": "page size",
             "name": "pageSize",
             "in": "query"
           }
@@ -148,6 +179,21 @@ func init() {
     }
   },
   "definitions": {
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "EMAIL",
+            "SLACK"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
     "Department": {
       "type": "object",
       "properties": {
@@ -217,6 +263,19 @@ func init() {
           "type": "string",
           "format": "uuid"
         },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "departmentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "departmentName": {
+          "type": "string"
+        },
         "firstName": {
           "type": "string"
         },
@@ -224,7 +283,17 @@ func init() {
           "type": "string",
           "format": "uuid"
         },
+        "jobTitle": {
+          "type": "string"
+        },
         "lastName": {
+          "type": "string"
+        },
+        "teamId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "teamName": {
           "type": "string"
         }
       }
@@ -285,9 +354,19 @@ func init() {
         "operationId": "getDepartments",
         "parameters": [
           {
-            "type": "string",
-            "description": "filter by department name",
-            "name": "nameFilter",
+            "type": "number",
+            "format": "int32",
+            "default": 0,
+            "description": "page number",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 10,
+            "description": "page size",
+            "name": "pageSize",
             "in": "query"
           }
         ],
@@ -324,6 +403,22 @@ func init() {
             "description": "id of the department to filter by",
             "name": "departmentId",
             "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 0,
+            "description": "page number",
+            "name": "pageNumber",
+            "in": "query"
+          },
+          {
+            "type": "number",
+            "format": "int32",
+            "default": 10,
+            "description": "page size",
+            "name": "pageSize",
+            "in": "query"
           }
         ],
         "responses": {
@@ -357,8 +452,13 @@ func init() {
             "type": "string",
             "description": "department id filter",
             "name": "departmentId",
-            "in": "query",
-            "required": true
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "team id filter",
+            "name": "teamId",
+            "in": "query"
           },
           {
             "type": "number",
@@ -372,7 +472,7 @@ func init() {
             "type": "number",
             "format": "int32",
             "default": 10,
-            "description": "page number",
+            "description": "page size",
             "name": "pageSize",
             "in": "query"
           }
@@ -395,6 +495,21 @@ func init() {
     }
   },
   "definitions": {
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "EMAIL",
+            "SLACK"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
     "Department": {
       "type": "object",
       "properties": {
@@ -464,6 +579,19 @@ func init() {
           "type": "string",
           "format": "uuid"
         },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "departmentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "departmentName": {
+          "type": "string"
+        },
         "firstName": {
           "type": "string"
         },
@@ -471,7 +599,17 @@ func init() {
           "type": "string",
           "format": "uuid"
         },
+        "jobTitle": {
+          "type": "string"
+        },
         "lastName": {
+          "type": "string"
+        },
+        "teamId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "teamName": {
           "type": "string"
         }
       }

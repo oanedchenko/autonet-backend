@@ -24,7 +24,23 @@ func TestDao_GetDepartmentsPage(t *testing.T) {
 func TestDao_GetTeamsPage(t *testing.T) {
 	d := NewDao()
 
-	data, count, err := d.GetTeamsPage("8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413", 0, 10)
+	// empty department id:
+	data, count, err := d.GetTeamsPage("", 0, 10)
+
+	if err != nil {
+		t.Errorf("Failed to query teams data: %+v", err)
+	}
+
+	if *count == 0 {
+		t.Errorf("Fail to query teams count")
+	}
+
+	if data == nil || len(*data) == 0 {
+		t.Errorf("No teams data received")
+	}
+
+	// existing department id:
+	data, count, err = d.GetTeamsPage("8c2ebd13-9ed5-4840-b9b7-5aaab8cf0413", 0, 10)
 
 	if err != nil {
 		t.Errorf("Failed to query teams data: %+v", err)

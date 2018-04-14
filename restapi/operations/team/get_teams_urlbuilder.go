@@ -11,11 +11,14 @@ import (
 	golangswaggerpaths "path"
 
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // GetTeamsURL generates an URL for the get teams operation
 type GetTeamsURL struct {
 	DepartmentID *strfmt.UUID
+	PageNumber   *int32
+	PageSize     *int32
 
 	_basePath string
 	// avoid unkeyed usage
@@ -57,6 +60,22 @@ func (o *GetTeamsURL) Build() (*url.URL, error) {
 	}
 	if departmentID != "" {
 		qs.Set("departmentId", departmentID)
+	}
+
+	var pageNumber string
+	if o.PageNumber != nil {
+		pageNumber = swag.FormatInt32(*o.PageNumber)
+	}
+	if pageNumber != "" {
+		qs.Set("pageNumber", pageNumber)
+	}
+
+	var pageSize string
+	if o.PageSize != nil {
+		pageSize = swag.FormatInt32(*o.PageSize)
+	}
+	if pageSize != "" {
+		qs.Set("pageSize", pageSize)
 	}
 
 	result.RawQuery = qs.Encode()

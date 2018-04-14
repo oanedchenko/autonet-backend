@@ -14,20 +14,15 @@ tags:
   description: Users related api
 paths:
 
-  "/user":
+  "/departmant":
     get:
       tags:
-      - user
-      summary: Get list of users with filtration by optional creteria
-      operationId: getUsers
+      - department
+      summary: Search for all departmants
+      operationId: getDepartments
       produces:
       - application/json
       parameters:
-      - in: query
-        name: departmentId
-        description: department id filter
-        required: true
-        type: string
       - in: query
         name: pageNumber
         type: number
@@ -39,33 +34,9 @@ paths:
         name: pageSize
         type: number
         format: int32
-        description: page number
+        description: page size
         required: false
         default: 10
-      responses:
-        '200':
-          description: OK
-          schema:
-            "$ref": "#/definitions/UserPage"
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-
-  "/departmant":
-    get:
-      tags:
-      - department
-      summary: Search for all departmants
-      operationId: getDepartments
-      produces:
-      - application/json
-      parameters:
-      - in: query
-        name: nameFilter
-        description: filter by department name
-        required: false
-        type: string
       responses:
         '200':
           description: OK
@@ -91,11 +62,68 @@ paths:
         required: false
         type: string
         format: uuid
+      - in: query
+        name: pageNumber
+        type: number
+        format: int32
+        description: page number
+        required: false
+        default: 0
+      - in: query
+        name: pageSize
+        type: number
+        format: int32
+        description: page size
+        required: false
+        default: 10
       responses:
         '200':
           description: OK
           schema:
             "$ref": "#/definitions/TeamPage"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+  "/user":
+    get:
+      tags:
+      - user
+      summary: Get list of users with filtration by optional creteria
+      operationId: getUsers
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: departmentId
+        description: department id filter
+        required: false
+        type: string
+      - in: query
+        name: teamId
+        description: team id filter
+        required: false
+        type: string
+      - in: query
+        name: pageNumber
+        type: number
+        format: int32
+        description: page number
+        required: false
+        default: 0
+      - in: query
+        name: pageSize
+        type: number
+        format: int32
+        description: page size
+        required: false
+        default: 10
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/UserPage"
         '401':
           description: Unauthorized
         '403':
@@ -116,7 +144,34 @@ definitions:
       avatar:
         type: string
         format: uuid
-        
+      departmentId:
+        type: string
+        format: uuid
+      departmentName:
+        type: string
+      teamId:
+        type: string
+        format: uuid
+      teamName:
+        type: string
+      jobTitle:
+        type: string
+      contacts:
+        type: array
+        items:
+          $ref: '#/definitions/Contact'
+
+  Contact:
+    type: object
+    properties:
+      type:
+        type: string
+        enum:
+        - EMAIL
+        - SLACK
+      value:
+        type: string
+
   UserPage:
     type: object
     properties:

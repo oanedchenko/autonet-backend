@@ -11,15 +11,27 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
 
 // NewGetDepartmentsParams creates a new GetDepartmentsParams object
-// no default values defined in spec.
+// with the default values initialized.
 func NewGetDepartmentsParams() GetDepartmentsParams {
 
-	return GetDepartmentsParams{}
+	var (
+		// initialize parameters with default values
+
+		pageNumberDefault = int32(0)
+		pageSizeDefault   = int32(10)
+	)
+
+	return GetDepartmentsParams{
+		PageNumber: &pageNumberDefault,
+
+		PageSize: &pageSizeDefault,
+	}
 }
 
 // GetDepartmentsParams contains all the bound params for the get departments operation
@@ -31,10 +43,16 @@ type GetDepartmentsParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*filter by department name
+	/*page number
 	  In: query
+	  Default: 0
 	*/
-	NameFilter *string
+	PageNumber *int32
+	/*page size
+	  In: query
+	  Default: 10
+	*/
+	PageSize *int32
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -48,8 +66,13 @@ func (o *GetDepartmentsParams) BindRequest(r *http.Request, route *middleware.Ma
 
 	qs := runtime.Values(r.URL.Query())
 
-	qNameFilter, qhkNameFilter, _ := qs.GetOK("nameFilter")
-	if err := o.bindNameFilter(qNameFilter, qhkNameFilter, route.Formats); err != nil {
+	qPageNumber, qhkPageNumber, _ := qs.GetOK("pageNumber")
+	if err := o.bindPageNumber(qPageNumber, qhkPageNumber, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qPageSize, qhkPageSize, _ := qs.GetOK("pageSize")
+	if err := o.bindPageSize(qPageSize, qhkPageSize, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -59,7 +82,7 @@ func (o *GetDepartmentsParams) BindRequest(r *http.Request, route *middleware.Ma
 	return nil
 }
 
-func (o *GetDepartmentsParams) bindNameFilter(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetDepartmentsParams) bindPageNumber(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -68,10 +91,37 @@ func (o *GetDepartmentsParams) bindNameFilter(rawData []string, hasKey bool, for
 	// Required: false
 	// AllowEmptyValue: false
 	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetDepartmentsParams()
 		return nil
 	}
 
-	o.NameFilter = &raw
+	value, err := swag.ConvertInt32(raw)
+	if err != nil {
+		return errors.InvalidType("pageNumber", "query", "int32", raw)
+	}
+	o.PageNumber = &value
+
+	return nil
+}
+
+func (o *GetDepartmentsParams) bindPageSize(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetDepartmentsParams()
+		return nil
+	}
+
+	value, err := swag.ConvertInt32(raw)
+	if err != nil {
+		return errors.InvalidType("pageSize", "query", "int32", raw)
+	}
+	o.PageSize = &value
 
 	return nil
 }

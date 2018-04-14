@@ -15,9 +15,10 @@ import (
 
 // GetUsersURL generates an URL for the get users operation
 type GetUsersURL struct {
-	DepartmentID string
+	DepartmentID *string
 	PageNumber   *int32
 	PageSize     *int32
+	TeamID       *string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -53,7 +54,10 @@ func (o *GetUsersURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	departmentID := o.DepartmentID
+	var departmentID string
+	if o.DepartmentID != nil {
+		departmentID = *o.DepartmentID
+	}
 	if departmentID != "" {
 		qs.Set("departmentId", departmentID)
 	}
@@ -72,6 +76,14 @@ func (o *GetUsersURL) Build() (*url.URL, error) {
 	}
 	if pageSize != "" {
 		qs.Set("pageSize", pageSize)
+	}
+
+	var teamID string
+	if o.TeamID != nil {
+		teamID = *o.TeamID
+	}
+	if teamID != "" {
+		qs.Set("teamId", teamID)
 	}
 
 	result.RawQuery = qs.Encode()

@@ -11,16 +11,28 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
 	strfmt "github.com/go-openapi/strfmt"
 )
 
 // NewGetTeamsParams creates a new GetTeamsParams object
-// no default values defined in spec.
+// with the default values initialized.
 func NewGetTeamsParams() GetTeamsParams {
 
-	return GetTeamsParams{}
+	var (
+		// initialize parameters with default values
+
+		pageNumberDefault = int32(0)
+		pageSizeDefault   = int32(10)
+	)
+
+	return GetTeamsParams{
+		PageNumber: &pageNumberDefault,
+
+		PageSize: &pageSizeDefault,
+	}
 }
 
 // GetTeamsParams contains all the bound params for the get teams operation
@@ -36,6 +48,16 @@ type GetTeamsParams struct {
 	  In: query
 	*/
 	DepartmentID *strfmt.UUID
+	/*page number
+	  In: query
+	  Default: 0
+	*/
+	PageNumber *int32
+	/*page size
+	  In: query
+	  Default: 10
+	*/
+	PageSize *int32
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -51,6 +73,16 @@ func (o *GetTeamsParams) BindRequest(r *http.Request, route *middleware.MatchedR
 
 	qDepartmentID, qhkDepartmentID, _ := qs.GetOK("departmentId")
 	if err := o.bindDepartmentID(qDepartmentID, qhkDepartmentID, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qPageNumber, qhkPageNumber, _ := qs.GetOK("pageNumber")
+	if err := o.bindPageNumber(qPageNumber, qhkPageNumber, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
+	qPageSize, qhkPageSize, _ := qs.GetOK("pageSize")
+	if err := o.bindPageSize(qPageSize, qhkPageSize, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -91,6 +123,50 @@ func (o *GetTeamsParams) validateDepartmentID(formats strfmt.Registry) error {
 	if err := validate.FormatOf("departmentId", "query", "uuid", o.DepartmentID.String(), formats); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (o *GetTeamsParams) bindPageNumber(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetTeamsParams()
+		return nil
+	}
+
+	value, err := swag.ConvertInt32(raw)
+	if err != nil {
+		return errors.InvalidType("pageNumber", "query", "int32", raw)
+	}
+	o.PageNumber = &value
+
+	return nil
+}
+
+func (o *GetTeamsParams) bindPageSize(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+	if raw == "" { // empty values pass all other validations
+		// Default values have been previously initialized by NewGetTeamsParams()
+		return nil
+	}
+
+	value, err := swag.ConvertInt32(raw)
+	if err != nil {
+		return errors.InvalidType("pageSize", "query", "int32", raw)
+	}
+	o.PageSize = &value
 
 	return nil
 }

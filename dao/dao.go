@@ -22,9 +22,9 @@ const (
 )
 
 var (
-	dbUrl  = os.Getenv(ENV_DB_URL)
-	dbName = os.Getenv(ENV_DB_NAME)
-	dbUser = os.Getenv(ENV_DB_USER)
+	dbUrl      = os.Getenv(ENV_DB_URL)
+	dbName     = os.Getenv(ENV_DB_NAME)
+	dbUser     = os.Getenv(ENV_DB_USER)
 	dbPassword = os.Getenv(DB_PASSWORD)
 
 	db       driver.Database
@@ -34,24 +34,35 @@ var (
 )
 
 type UserData struct {
-	Id        string `json:"_key,omitempty"`
-	Avatar    string `json:"avatar,omitempty"`
-	FirstName string `json:"firstName,omitempty"`
-	LastName  string `json:"lastName,omitempty"`
+	Id             string    `json:"_key,omitempty"`
+	FirstName      string    `json:"firstName,omitempty"`
+	LastName       string    `json:"lastName,omitempty"`
+	Avatar         string    `json:"avatar,omitempty"`
+	DepartmentID   string    `json:"departmentId,omitempty"`
+	DepartmentName string    `json:"departmentName,omitempty"`
+	TeamID         string    `json:"teamId,omitempty"`
+	TeamName       string    `json:"teamName,omitempty"`
+	JobTitle       string    `json:"jobTitle,omitempty"`
+	Contacts       []Contact `json:"contacts"`
+}
+
+type Contact struct {
+	Type  string `json:"type,omitempty"`
+	Value string `json:"value,omitempty"`
 }
 
 type TeamData struct {
-	Id        string `json:"_key,omitempty"`
+	Id   string `json:"_key,omitempty"`
 	Name string `json:"name,omitempty"`
 }
 
 type DepartmentData struct {
-	Id        string `json:"_key,omitempty"`
+	Id   string `json:"_key,omitempty"`
 	Name string `json:"name,omitempty"`
 }
 
 type Dao interface {
-	GetUsersPage (departmentId string, teamId string, offset int, limit int) (*[]UserData, *int32, error)
+	GetUsersPage(departmentId string, teamId string, offset int, limit int) (*[]UserData, *int32, error)
 	GetTeamsPage(departmentId string, offset int, limit int) (*[]TeamData, *int32, error)
 	GetDepartmentsPage(offset int, limit int) (*[]DepartmentData, *int32, error)
 }
@@ -66,7 +77,7 @@ func init() {
 	}
 
 	c, err := driver.NewClient(driver.ClientConfig{
-		Connection: conn,
+		Connection:     conn,
 		Authentication: driver.BasicAuthentication(dbUser, dbPassword),
 	})
 	if err != nil {
@@ -94,27 +105,26 @@ func init() {
 	}
 }
 
-func NewDao() Dao {
-	var d Dao
-	d = dao{}
-	return d
+func NewDao() *dao {
+	return &dao{}
 }
 
-type dao struct {}
+type dao struct{}
 
-func (d dao) GetUsersPage(departmentId string, teamId string, offset int, limit int) (*[]UserData, *int32, error) {
+func (d *dao) GetUsersPage(departmentId string, teamId string, offset int, limit int) (*[]UserData, *int32, error) {
 	log.Debugf("Getting users page: offset %v, limit %v", offset, limit)
 	var users = make([]UserData, 0, limit)
 	vars := map[string]interface{}{
-		"limit":  limit,
-		"offset": offset,
+		"limit":        limit,
+		"offset":       offset,
 		"departmentId": departmentId,
-		"teamId": teamId,
+		"teamId":       teamId,
 	}
 	ctx := driver.WithQueryCount(context.Background())
 	cursor, err := db.Query(ctx, `FOR u IN users
-		FILTER u.departmentId == @departmentId AND u.teamId == @teamId
-		SORT u.username 
+		FILTER (@departmentId == "" || u.departmentId == @departmentId)
+			|| (@teamId == "" || u.teamId == @teamId)
+		SORT u.lastName, u.firstName 
 		LIMIT @offset, @limit 
 		RETURN u`, vars)
 
@@ -139,10 +149,11 @@ func (d dao) GetUsersPage(departmentId string, teamId string, offset int, limit 
 
 	vars = map[string]interface{}{
 		"departmentId": departmentId,
-		"teamId": teamId,
+		"teamId":       teamId,
 	}
 	countCursor, err := db.Query(context.Background(), `FOR u IN users
-		FILTER u.departmentId == @departmentId AND u.teamId == @teamId
+		FILTER (@departmentId == "" || u.departmentId == @departmentId)
+			|| (@teamId == "" || u.teamId == @teamId)
         COLLECT WITH COUNT INTO length
         RETURN length`, vars)
 
@@ -163,19 +174,19 @@ func (d dao) GetUsersPage(departmentId string, teamId string, offset int, limit 
 	return &users, &count, err
 }
 
-func (d dao) GetTeamsPage(departmentId string, offset int, limit int) (*[]TeamData, *int32, error) {
+func (d *dao) GetTeamsPage(departmentId string, offset int, limit int) (*[]TeamData, *int32, error) {
 	log.Debugf("Getting teams page: offset %v, limit %v", offset, limit)
 	var teams = make([]TeamData, 0, limit)
 	vars := map[string]interface{}{
-		"limit":  limit,
-		"offset": offset,
+		"limit":        limit,
+		"offset":       offset,
 		"departmentId": departmentId,
 	}
 	ctx := driver.WithQueryCount(context.Background())
 	// todo: replace departmentId with some nice graph query!
 	cursor, err := db.Query(ctx, `
 		FOR t IN teams
-		FILTER t.departmentId == @departmentId 
+		FILTER @departmentId == "" || t.departmentId == @departmentId  
 		SORT t.name 
 		LIMIT @offset, @limit 
 		RETURN t`, vars)
@@ -204,7 +215,7 @@ func (d dao) GetTeamsPage(departmentId string, offset int, limit int) (*[]TeamDa
 	}
 	// todo: add department creteria!!!!!!!!!!!!!
 	countCursor, err := db.Query(context.Background(), `FOR t IN teams
-		FILTER t.departmentId == @departmentId 
+		FILTER @departmentId == "" || t.departmentId == @departmentId
         COLLECT WITH COUNT INTO length
         RETURN length`, vars)
 
@@ -225,7 +236,7 @@ func (d dao) GetTeamsPage(departmentId string, offset int, limit int) (*[]TeamDa
 	return &teams, &count, err
 }
 
-func (d dao) GetDepartmentsPage(offset int, limit int) (*[]DepartmentData, *int32, error) {
+func (d *dao) GetDepartmentsPage(offset int, limit int) (*[]DepartmentData, *int32, error) {
 	log.Debugf("Getting users page: offset %v, limit %v", offset, limit)
 	var departments = make([]DepartmentData, 0, limit)
 	vars := map[string]interface{}{

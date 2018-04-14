@@ -6,10 +6,9 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	errors "github.com/go-openapi/errors"
-	runtime "github.com/go-openapi/runtime"
-	middleware "github.com/go-openapi/runtime/middleware"
-	graceful "github.com/tylerb/graceful"
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
+	"github.com/tylerb/graceful"
 
 	"auto1.com/autonet-be/restapi/operations"
 	"auto1.com/autonet-be/restapi/operations/department"
@@ -37,15 +36,9 @@ func configureAPI(api *operations.AutonetAPIDocumentationAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.DepartmentGetDepartmentsHandler = department.GetDepartmentsHandlerFunc(func(params department.GetDepartmentsParams) middleware.Responder {
-		return middleware.NotImplemented("operation department.GetDepartments has not yet been implemented")
-	})
-	api.TeamGetTeamsHandler = team.GetTeamsHandlerFunc(func(params team.GetTeamsParams) middleware.Responder {
-		return middleware.NotImplemented("operation team.GetTeams has not yet been implemented")
-	})
-	api.UserGetUsersHandler = user.GetUsersHandlerFunc(func(params user.GetUsersParams) middleware.Responder {
-		return middleware.NotImplemented("operation user.GetUsers has not yet been implemented")
-	})
+	api.DepartmentGetDepartmentsHandler = department.GetDepartmentsHandlerFunc(GetDepartmentsPage)
+	api.TeamGetTeamsHandler = team.GetTeamsHandlerFunc(GetTeamsPage)
+	api.UserGetUsersHandler = user.GetUsersHandlerFunc(GetUsersPage)
 
 	api.ServerShutdown = func() {}
 
