@@ -26,7 +26,7 @@ func init() {
   },
   "basePath": "/",
   "paths": {
-    "/departmant": {
+    "/department": {
       "get": {
         "produces": [
           "application/json"
@@ -34,7 +34,7 @@ func init() {
         "tags": [
           "department"
         ],
-        "summary": "Search for all departmants",
+        "summary": "Search for all departments",
         "operationId": "getDepartments",
         "parameters": [
           {
@@ -342,7 +342,7 @@ func init() {
   },
   "basePath": "/",
   "paths": {
-    "/departmant": {
+    "/department": {
       "get": {
         "produces": [
           "application/json"
@@ -350,7 +350,7 @@ func init() {
         "tags": [
           "department"
         ],
-        "summary": "Search for all departmants",
+        "summary": "Search for all departments",
         "operationId": "getDepartments",
         "parameters": [
           {

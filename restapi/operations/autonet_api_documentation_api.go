@@ -263,7 +263,7 @@ func (o *AutonetAPIDocumentationAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/departmant"] = department.NewGetDepartments(o.context, o.DepartmentGetDepartmentsHandler)
+	o.handlers["GET"]["/department"] = department.NewGetDepartments(o.context, o.DepartmentGetDepartmentsHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

@@ -29,9 +29,9 @@ func NewGetDepartments(ctx *middleware.Context, handler GetDepartmentsHandler) *
 	return &GetDepartments{Context: ctx, Handler: handler}
 }
 
-/*GetDepartments swagger:route GET /departmant department getDepartments
+/*GetDepartments swagger:route GET /department department getDepartments
 
-Search for all departmants
+Search for all departments
 
 */
 type GetDepartments struct {

@@ -42,7 +42,7 @@ func (o *GetDepartmentsURL) SetBasePath(bp string) {
 func (o *GetDepartmentsURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/departmant"
+	var _path = "/department"
 
 	_basePath := o._basePath
 	if _basePath == "" {

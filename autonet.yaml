@@ -14,11 +14,11 @@ tags:
   description: Users related api
 paths:
 
-  "/departmant":
+  "/department":
     get:
       tags:
       - department
-      summary: Search for all departmants
+      summary: Search for all departments
       operationId: getDepartments
       produces:
       - application/json
