@@ -11,7 +11,8 @@ cd $P
 
 docker build -t $IMAGE .
 docker save $IMAGE | gzip > ${APP}.tgz
-scp ${APP}.tgz root@bb97.k.time4vps.cloud:/root/deploy/auto1
-ssh root@bb97.k.time4vps.cloud /root/deploy/auto1/redeploy-autonet.sh
+scp ${APP}.tgz root@10f20.k.time4vps.cloud:/root/deploy/auto1
+ssh root@10f20.k.time4vps.cloud /root/deploy/auto1/redeploy-autonet.sh
 
 rm autonet autonet.tgz
+
